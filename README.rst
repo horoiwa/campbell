@@ -7,6 +7,12 @@ Interactive dataframe vizualization on jupyter notebookhttps://github.com/horoiw
 Overview
 ========
 
+Installation
+===========
+jupyter labextension install @pyviz/jupyterlab_pyviz
+
 
 Gallely
 =======
+
+
