@@ -10,8 +10,39 @@ const chart_height = height - margin.top - margin.bottom;
 
 //const data = {pd.DataFrame.to_json(orient="records", force_ascii=True)}
 //const data = [{"CRIM":1.0,"ZN":-0.2004692197,"INDUS":0.4065834114,"CHAS":-0.0558915822},{"CRIM":-0.2004692197,"ZN":1.0,"INDUS":-0.5338281863,"CHAS":-0.0426967193},{"CRIM":0.4065834114,"ZN":-0.5338281863,"INDUS":1.0,"CHAS":0.0629380275},{"CRIM":-0.0558915822,"ZN":-0.0426967193,"INDUS":0.0629380275,"CHAS":1.0}]
-const rawdata = {"CRIM":{"CRIM":1.0,"ZN":-0.2004692197,"INDUS":0.4065834114,"CHAS":-0.0558915822},"ZN":{"CRIM":-0.2004692197,"ZN":1.0,"INDUS":-0.5338281863,"CHAS":-0.0426967193},"INDUS":{"CRIM":0.4065834114,"ZN":-0.5338281863,"INDUS":1.0,"CHAS":0.0629380275},"CHAS":{"CRIM":-0.0558915822,"ZN":-0.0426967193,"INDUS":0.0629380275,"CHAS":1.0}}
-const indices = Object.keys(rawdata)
+const rawData = {"CRIM":{"CRIM":1.0,"ZN":-0.2004692197,"INDUS":0.4065834114,"CHAS":-0.0558915822},"ZN":{"CRIM":-0.2004692197,"ZN":1.0,"INDUS":-0.5338281863,"CHAS":-0.0426967193},"INDUS":{"CRIM":0.4065834114,"ZN":-0.5338281863,"INDUS":1.0,"CHAS":0.0629380275},"CHAS":{"CRIM":-0.0558915822,"ZN":-0.0426967193,"INDUS":0.0629380275,"CHAS":1.0}}
+const indices = Object.keys(rawData)
+
+var upperData = [];
+for (i=0; i<indices.length; i++){
+    for (j=i+1; j<indices.length; j++){
+        let d = {};
+        d.x = indices[i];
+        d.y = indices[j];
+        d.corr = rawData[d.x][d.y];
+        upperData.push(d);
+    }
+}
+
+var lowerData= [];
+for (i=0; i<indices.length; i++){
+    for (j=i+1; j<indices.length; j++){
+        let d = {};
+        d.y = indices[i];
+        d.x = indices[j];
+        d.corr = rawData[d.x][d.y];
+        lowerData.push(d);
+    }
+}
+
+var middleData = [];
+for (i=0; i<indices.length; i++){
+        let d = {};
+        d.x = indices[i];
+        d.y = indices[i];
+        d.corr = rawData[d.x][d.y];
+        middleData.push(d);
+}
 
 // Create Scaler
 var size = d3.scaleSqrt()
@@ -30,7 +61,6 @@ var y_scale = d3.scaleBand()
     .domain(indices)
     .range([0, chart_height]);
 
-var data = [{"idx": 1, "col": 1, "corr": 0.7}]
 
 // Create SVG Element
 // svg要素直下でtransfromしておけば下位要素にもtransformが適用される
@@ -49,6 +79,7 @@ svg.append("g")
    .attr("transform", `translate(0, ${chart_height})`) // 左上が(0,0)。 X軸をグラフの下部に表示するには、描画領域の高さ分下げる
    .call(x_axis); // scaleBandを設定
 
+/*
 svg.selectAll(".point")
     .data(data)
     .enter()
@@ -56,4 +87,4 @@ svg.selectAll(".point")
     .attr("class", "point")
     .attr("x", 33)
     .attr("y", 66)
-
+*/
