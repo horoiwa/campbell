@@ -64,7 +64,7 @@ var y_scale = d3.scaleBand()
 
 // Create SVG Element
 // svg要素直下でtransfromしておけば下位要素にもtransformが適用される
-var svg = d3.select("#chart")
+var svg = d3.select("#chart1")
     .append("svg")
     .attr("width", width)
     .attr("height", height)
@@ -101,3 +101,10 @@ svg.selectAll(".fname")
     .attr("fill", "lightgrey")
     .attr("r", x_scale.bandwidth()/4)
 
+// Create chart2
+var svg = d3.select("#chart2")
+    .append("svg")
+    .attr("width", width)
+    .attr("height", height)
+    .append("g")
+    .attr("transform", `translate(${margin.left}, ${margin.top})`);
