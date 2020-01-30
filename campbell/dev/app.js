@@ -1,20 +1,20 @@
 
-// margin setting
+// Embeded from Python
 const width = 430;
 const height = 430;
-const margin = {top: 20, right: 20, bottom: 20, left: 20};
+const margin = {top: 20, right: 20, bottom: 60, left: 60};
+const fontsize = 12
+const fontfamily = "sans-serif"
 
 const chart_width = width - margin.left - margin.right;
 const chart_height = height - margin.top - margin.bottom;
 
-
-//const data = {pd.DataFrame.to_json(orient="records", force_ascii=True)}
-//const data = [{"CRIM":1.0,"ZN":-0.2004692197,"INDUS":0.4065834114,"CHAS":-0.0558915822},{"CRIM":-0.2004692197,"ZN":1.0,"INDUS":-0.5338281863,"CHAS":-0.0426967193},{"CRIM":0.4065834114,"ZN":-0.5338281863,"INDUS":1.0,"CHAS":0.0629380275},{"CRIM":-0.0558915822,"ZN":-0.0426967193,"INDUS":0.0629380275,"CHAS":1.0}]
 const rawData = {"CRIM":{"CRIM":1.0,"ZN":-0.2004692197,"INDUS":0.4065834114,"CHAS":-0.0558915822},"ZN":{"CRIM":-0.2004692197,"ZN":1.0,"INDUS":-0.5338281863,"CHAS":-0.0426967193},"INDUS":{"CRIM":0.4065834114,"ZN":-0.5338281863,"INDUS":1.0,"CHAS":0.0629380275},"CHAS":{"CRIM":-0.0558915822,"ZN":-0.0426967193,"INDUS":0.0629380275,"CHAS":1.0}}
 const indices = Object.keys(rawData)
+//
 
 var upperData = [];
-for (i=0; i<indices.length; i++){
+for (let i=0; i<indices.length; i++){
     for (j=i+1; j<indices.length; j++){
         let d = {};
         d.x = indices[i];
@@ -25,7 +25,7 @@ for (i=0; i<indices.length; i++){
 }
 
 var lowerData= [];
-for (i=0; i<indices.length; i++){
+for (let i=0; i<indices.length; i++){
     for (j=i+1; j<indices.length; j++){
         let d = {};
         d.y = indices[i];
@@ -36,7 +36,7 @@ for (i=0; i<indices.length; i++){
 }
 
 var middleData = [];
-for (i=0; i<indices.length; i++){
+for (let i=0; i<indices.length; i++){
         let d = {};
         d.x = indices[i];
         d.y = indices[i];
@@ -73,18 +73,31 @@ var svg = d3.select("#chart")
 
 // X-axis
 var x_axis = d3.axisBottom(x_scale);
+var y_axis = d3.axisLeft(y_scale);
 
 svg.append("g")
-   .attr("class", "x axis")
-   .attr("transform", `translate(0, ${chart_height})`) // 左上が(0,0)。 X軸をグラフの下部に表示するには、描画領域の高さ分下げる
-   .call(x_axis); // scaleBandを設定
+   .attr("class", "xaxis")
+   .attr("transform", `translate(0, ${chart_height})`)
+   .call(x_axis)
+   .selectAll('text')
+   .attr('transform', "rotate(-45)");
 
-/*
-svg.selectAll(".point")
-    .data(data)
+svg.append("g")
+   .attr("class", "yaxis")
+   .call(y_axis);
+
+
+svg.selectAll(".fname")
+    .data(middleData)
     .enter()
     .append("circle")
-    .attr("class", "point")
-    .attr("x", 33)
-    .attr("y", 66)
-*/
+    .attr("class", "fname")
+    .attr("cx", (d) => {
+        return x_scale(d.x) + x_scale.bandwidth()/2;
+    })
+    .attr("cy", (d)=>{
+        return y_scale(d.y) + y_scale.bandwidth()/2;
+    })
+    .attr("fill", "lightgrey")
+    .attr("r", x_scale.bandwidth()/4)
+

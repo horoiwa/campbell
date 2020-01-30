@@ -1,0 +1,8 @@
+
+.xaxis path, .xaxis line{
+  display: none ;
+}
+
+.yaxis path, .yaxis line{
+  display: none ;
+}
