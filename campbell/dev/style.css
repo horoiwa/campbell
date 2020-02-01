@@ -1,11 +1,7 @@
 .dashbord{
  width: 100%;
  display: flex;
- flex-wrap: wrap;
-}
-
-.dashbord > div{
-	width: 40%;
+ flex-wrap: normal;
 }
 
 .xaxis path, .xaxis line{
