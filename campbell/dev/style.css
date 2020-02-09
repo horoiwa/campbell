@@ -1,7 +1,22 @@
 .dashbord{
- width: 100%;
- display: flex;
- flex-wrap: normal;
+  width: 100%;
+  display: flex;
+  flex-wrap: normal;
+  background-color: whitesmoke;
+}
+
+#chart1{
+  margin: 4px;
+  box-shadow: 0px 0px 4px lightgray;
+  background-color: white;
+  border-radius: 10px;
+}
+
+#chart2{
+  margin: 4px;
+  box-shadow: 0px 0px 4px lightgray;
+  background-color: white;
+  border-radius: 10px;
 }
 
 .xaxis path, .xaxis line{
@@ -11,3 +26,15 @@
 .yaxis path, .yaxis line{
   display: none ;
 }
+
+.tooltip {
+    position: absolute;
+    text-align: center;
+    width: auto;
+    height: auto;
+    padding: 5px;
+    font-size: 10px;
+    background: white;
+    box-shadow: 0px 0px 10px lightgray;
+    visibility: hidden;
+  }

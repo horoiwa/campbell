@@ -1,8 +1,12 @@
 
 
-def CorrelationPlot():
+def Correlogram():
     return None
 
 
-def StatsPlot():
+def FacetPlot():
+    return None
+
+
+def FacetPlot3D():
     return None
