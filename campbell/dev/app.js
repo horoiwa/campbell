@@ -1,7 +1,7 @@
 // Embeded from Python
 const width = 400;
 const height = 400;
-const margin = {top: 40, right: 20, bottom: 20, left: 40};
+const margin = {top: 40, right: 40, bottom: 40, left: 40};
 const fontsize = 10;
 const fontfamily = "sans-serif";
 
@@ -12,8 +12,8 @@ const rawData = {"CRIM":{"CRIM":1.0,"ZN":-0.2004692197,"INDUS":0.4065834114,"CHA
 const scatterData = [{"CRIM": 1,"ZN": 4,"INDUS": 6,"CHAS": 3},{"CRIM": 9,"ZN": 2,"INDUS": 4, "CHAS": 5}, {"CRIM": 7, "ZN": 3, "INDUS": 1, "CHAS": 0}]
 const indices = Object.keys(rawData)
 
-var scatterX = indices[0]
-var scatterY = indices[1]
+var xname = indices[0]
+var yname = indices[1]
 var scatterR = 10
 
 
@@ -180,9 +180,7 @@ svg.selectAll(".corCircle")
             });
         tooltip.style("visibility", "hidden");
     })
-    .on("click", function(d){
-        console.log(d.x);
-    });
+    .on("click", updateScatter);
 
 
 svg.selectAll(".corstr")
@@ -212,6 +210,7 @@ svg.selectAll(".corstr")
 
 
 // Create chart2
+
 var svg2 = d3.select("#chart2")
     .append("svg")
     .attr("width", width)
@@ -239,14 +238,14 @@ svg2.append("clipPath")
     .attr("height", chart_height)
 
 var x_scale2 = d3.scaleLinear()
-    .domain([d3.min(scatterData.map((o)=>{return o[scatterX]})),
-             d3.max(scatterData.map((o)=>{return o[scatterX]})),
+    .domain([d3.min(scatterData.map((o)=>{return o[xname]})),
+             d3.max(scatterData.map((o)=>{return o[xname]})),
              ])
     .range([0, chart_width]);
 
 var y_scale2 = d3.scaleLinear()
-    .domain([d3.min(scatterData.map((o)=>{return o[scatterY]})),
-             d3.max(scatterData.map((o)=>{return o[scatterY]})),
+    .domain([d3.min(scatterData.map((o)=>{return o[yname]})),
+             d3.max(scatterData.map((o)=>{return o[yname]})),
              ])
     .range([0, chart_height]);
 
@@ -257,10 +256,33 @@ svg2.append("g")
     .attr("class", "xaxis2")
     .attr("transform", `translate(0, ${chart_height})`)
     .call(x_axis2)
+    .append("g")
+    .attr("class", "xlabel")
+    .append("text")
+    .attr("fill", "dimgrey")
+    .style("font-size", "16px")
+    .style('font-weight', 'bold')
+    .attr("x", chart_width)
+    .attr("y", -6)
+    .style("text-anchor", "end")
+    .text(`${xname}`);
+
 
 svg2.append("g")
     .attr("class", "yaxis2")
     .call(y_axis2)
+    .append("g")
+    .attr("class", "ylabel")
+    .append("text")
+    .attr("fill", "dimgrey")
+    .style("font-size", "16px")
+    .style('font-weight', 'bold')
+    .attr("transform", "rotate(-90)")
+    .attr("y", 6)
+    .attr("dy", ".71em")
+    .style("text-anchor", "end")
+    .text(`${yname}`);
+
 
 svg2.append("g")
     .attr("id", "plot-area-scatter")
@@ -271,10 +293,18 @@ svg2.append("g")
     .append("circle")
     .attr("class", "points")
     .attr("cx", (d) => {
-        return x_scale2(d[scatterX]);
+        return x_scale2(d[xname]);
     })
     .attr("cy", (d) => {
-        return y_scale2(d[scatterY]);
+        return y_scale2(d[yname]);
     })
     .attr("fill", "steelblue")
     .attr("r", scatterR);
+
+
+function updateScatter(d, i){
+    xname = d.x;
+    yname = d.y;
+    console.log(xname);
+    console.log(yname);
+}
