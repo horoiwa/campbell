@@ -63,7 +63,7 @@ var csize = d3.scaleSqrt()
 
 var ccolor = d3.scaleLinear()
     .domain([-1, 0, 1])
-    .range(["#B22222", "#fff", "#000080"]);
+    .range(["#000080", "#fff", "#B22222"]);
 
 // tooltip
 var tooltip = d3.select("body").append("div").attr("class", "tooltip");
@@ -238,15 +238,17 @@ svg2.append("clipPath")
     .attr("height", chart_height)
 
 var x_scale2 = d3.scaleLinear()
-    .domain([d3.min(scatterData.map((o)=>{return o[xname]})),
-             d3.max(scatterData.map((o)=>{return o[xname]})),
-             ])
+    .domain(getScaleMergin(
+             min=d3.min(scatterData.map((o)=>{return o[xname]})),
+             max=d3.max(scatterData.map((o)=>{return o[xname]})),
+            ))
     .range([0, chart_width]);
 
 var y_scale2 = d3.scaleLinear()
-    .domain([d3.min(scatterData.map((o)=>{return o[yname]})),
-             d3.max(scatterData.map((o)=>{return o[yname]})),
-             ])
+    .domain(getScaleMergin(
+              min=d3.min(scatterData.map((o)=>{return o[yname]})),
+              max=d3.max(scatterData.map((o)=>{return o[yname]})),
+             ))
     .range([0, chart_height]);
 
 var x_axis2 = d3.axisBottom(x_scale2);
@@ -302,9 +304,40 @@ svg2.append("g")
     .attr("r", scatterR);
 
 
-function updateScatter(d, i){
+function getScaleMergin(min, max){
+    let mergin = (max - min) * 0.1;
+    return [min - mergin, max + mergin];
+};
+function updateScatter(d){
     xname = d.x;
     yname = d.y;
-    console.log(xname);
-    console.log(yname);
+
+    x_scale2.domain(getScaleMergin(
+                     min=d3.min(scatterData.map((o)=>{return o[xname]})),
+                     max=d3.max(scatterData.map((o)=>{return o[xname]}))
+                     ));
+
+    y_scale2.domain(getScaleMergin(
+                      min=d3.min(scatterData.map((o)=>{return o[yname]})),
+                      max=d3.max(scatterData.map((o)=>{return o[yname]})))
+                    );
+
+    svg2.selectAll(".xlabel")
+        .selectAll("text")
+        .text(`${xname}`);
+
+    svg2.selectAll(".ylabel")
+        .selectAll("text")
+        .text(`${yname}`);
+
+    svg2.selectAll("circle")
+        .transition()
+        .delay(function(d, i){return 1})
+        .attr("cx", (d) => {
+            return x_scale2(d[xname]);
+        })
+        .attr("cy", (d) => {
+            return y_scale2(d[yname]);
+        });
+
 }
