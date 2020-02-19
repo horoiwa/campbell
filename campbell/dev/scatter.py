@@ -27,7 +27,7 @@ HTML_TEMPLATE = Template("""
     """)
 
 
-class Scatter:
+class SimpleScatter:
 
     def __init__(self, data, jupyter=False):
 
