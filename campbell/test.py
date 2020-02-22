@@ -3,6 +3,32 @@ from string import Template
 import pandas as pd
 import json, random
 
+
+"""Memo
+なぜかv3はダウンロードできる謎, ロードのふるまいが異なるっぽい
+https://stackoverflow.com/questions/56978904/d3-js-v5-loading-behavior-is-different-from-v3-in-jupyter-notebook
+
+- requireJS
+https://github.com/jupyter/notebook/issues/4462
+
+campbell.load_d3()を実行することで**v3**なら問題なく動きそう
+この場合、html側ではd3をロードする必要すらない
+
+
+次：js側requireを使用してd3のロード
+たしかに描画されるがブラウザがd3を読み込んでいないっぽいのでアニメーションやツールチップが効かない
+
+次：js側requireを使用してd3のロード かつ　ブラウザにも読ませる
+load_d3 で　staticのd3読ませればよいのでは？
+だめだった。v4,5はlazyロードしている気がする
+"""
+
+def load_d3():
+    return HTML(
+        '''<script src="https://d3js.org/d3.v3.min.js" charset="utf-8" >
+           </script><script>alert("load d3.v3.min.js");</script>
+        ''')
+
 #HTML('<script src="./d3.min.js"></script>')
 
 def TestD3():
@@ -130,7 +156,7 @@ def TestD3():
     js_text = js_text_template.substitute({'python_data': json.dumps(iris_array_of_dicts),
                                            'graphdiv': 'graph-div'})
     my_plot = html_template.substitute({'css_text': css_text, 'js_text': js_text})
-    d3_download = """ <script src="http://d3js.org/d3.v3.min.js" charset="utf-8" > </script>"""
+    d3_download = """ <script src="http://d3js.org/d3.v4.min.js" charset="utf-8" > </script>"""
 
     my_plot = d3_download + my_plot
 

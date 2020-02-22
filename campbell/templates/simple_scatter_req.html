@@ -55,10 +55,15 @@
 <script src="{{D3_FILE}}" charset="utf-8"></script>
 <script src="../static/d3.min.js" charset="utf-8"></script>
 -->
-<script src="https://d3js.org/d3.v3.min.js" charset="utf-8"></script>
 
 <script>
+    require.config({
+    paths: {
+        d3: 'https://d3js.org/d3.v5.min'
+    }
+    });
 
+    require(["d3"], function(d3) {
 
     var width = 400;
     var height= 400;
@@ -189,6 +194,7 @@
         return [min - mergin, max + mergin];
     };
 
+})
 </script>
 
 
