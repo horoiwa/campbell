@@ -21,13 +21,24 @@ campbell.load_d3()を実行することで**v3**なら問題なく動きそう
 次：js側requireを使用してd3のロード かつ　ブラウザにも読ませる
 load_d3 で　staticのd3読ませればよいのでは？
 だめだった。v4,5はlazyロードしている気がする
+
+v3で試すとインタラクティブになるのでブラウザ側にd3.v5を読ませる方法を探さなければ
+もうjs芸で差し込めばいいのでは => まずはNotebookファイルの直接編集で試そう
+
+ちなみにIpython.core.display.HTML("<script></script>")でjsをぶっこめるので悪意あることができそうだね
+
+tooltip使えないこと以外はとくに問題なしJ
+
 """
 
-def load_d3():
-    return HTML(
-        '''<script src="https://d3js.org/d3.v3.min.js" charset="utf-8" >
-           </script><script>alert("load d3.v3.min.js");</script>
-        ''')
+def load_d3(version=None):
+    if version == "v3":
+        return HTML(
+         '''<script src="https://d3js.org/d3.v3.min.js" charset="utf-8" >
+            </script><script>alert("load d3.v3.min.js");</script>
+         ''')
+    elif version == "v4":
+        pass
 
 #HTML('<script src="./d3.min.js"></script>')
 

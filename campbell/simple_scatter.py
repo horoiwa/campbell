@@ -17,15 +17,11 @@ class SimpleScatter:
 
         self.template = ENV.get_template("simple_scatter.html")
 
-        HTML('<script src="https://d3js.org/d3.v3.min.js" charset="utf-8" ></script><script>alert("load D3");</script>')
 
     def plot(self):
         html = self.template.render({"D3_FILE": D3_FILE})
-        #tmpl = pn.Template(self.template)
-        #return pn.pane.HTML(html)
-        #return tmpl.servable()
-        #with open(TEMPLATE_DIR / "simple_scatter.html", "r") as f:
-        #    html = f.read()
+        if self.is_jupyter:
+            html = HTML(html)
         return html
 
 
@@ -37,5 +33,5 @@ if __name__ == "__main__":
     df = pd.DataFrame(bos.data, columns=bos.feature_names)
     df = df.iloc[:20, :]
 
-    app = SimpleScatter(df=df, jupyter=True)
+    app = SimpleScatter(df=df, jupyter=False)
     print(app.plot())

@@ -55,7 +55,7 @@
 <script src="{{D3_FILE}}" charset="utf-8"></script>
 <script src="../static/d3.min.js" charset="utf-8"></script>
 -->
-<script src="https://d3js.org/d3.v4.min.js" charset="utf-8"></script>
+<script src="https://d3js.org/d3.v3.min.js" charset="utf-8"></script>
 
 <script>
 
@@ -104,22 +104,22 @@
         .attr("width", chart_width)
         .attr("height", chart_height)
 
-    var x_scale = d3.scaleLinear()
+    var x_scale = d3.scale.linear()
         .domain(getScaleMargin(
                  min=d3.min(DATASET.map((o)=>{return o[XNAME]})),
                  max=d3.max(DATASET.map((o)=>{return o[XNAME]})),
                 ))
         .range([0, chart_width]);
 
-    var y_scale = d3.scaleLinear()
+    var y_scale = d3.scale.linear()
         .domain(getScaleMargin(
                   min=d3.min(DATASET.map((o)=>{return o[YNAME]})),
                   max=d3.max(DATASET.map((o)=>{return o[YNAME]})),
                  ))
         .range([0, chart_height]);
 
-    var x_axis = d3.axisBottom(x_scale);
-    var y_axis = d3.axisLeft(y_scale);
+    var x_axis = d3.svg.axis().scale(x_scale).orient("bottom")
+    var y_axis = d3.svg.axis().scale(y_scale).orient("left")
 
     svg.append("g")
         .attr("class", "xaxis")
