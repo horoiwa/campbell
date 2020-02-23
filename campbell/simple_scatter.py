@@ -1,4 +1,5 @@
 from IPython.display import display, HTML
+from pprint import pprint
 
 import pandas as pd
 import panel as pn
@@ -11,17 +12,19 @@ class SimpleScatter:
 
     def __init__(self, df: pd.DataFrame, jupyter: bool):
 
-        self.data = df.to_json(orient="index")
+        self.data = df.to_json(orient="records")
 
         self.is_jupyter = jupyter
 
         self.template = ENV.get_template("simple_scatter.html")
 
-
     def plot(self):
-        html = self.template.render({"D3_FILE": D3_FILE})
+        html = self.template.render({"D3_FILE": D3_FILE, "DATASET": self.data})
+        #pprint(html)
         if self.is_jupyter:
             html = HTML(html)
+        else:
+            html = pn.pane.HTML(html)
         return html
 
 

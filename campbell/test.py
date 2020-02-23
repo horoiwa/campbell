@@ -29,6 +29,8 @@ v3で試すとインタラクティブになるのでブラウザ側にd3.v5を�
 
 tooltip使えないこと以外はとくに問題なしJ
 
+Jupyterlabだとrequireがいらない！！
+
 """
 
 def load_d3(version=None):
