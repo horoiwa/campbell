@@ -1,3 +1,4 @@
-__version__ = '0.1.0'
+from campbell.constants import initjs
 
-from campbell.test import load_d3
+
+__version__ = '0.1.0'

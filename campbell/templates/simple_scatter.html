@@ -27,21 +27,21 @@
 <body>
 <div id="chart"></div>
 
-<script src="https://d3js.org/d3.v4.js"></script>
+<script src="https://d3js.org/d3.v5.js"></script>
+<!--<script src="campbell/static/d3.min.js"></script>-->
 <script>
 
-    var width = 400;
-    var height= 400;
+    var width = {{ WIDTH }};
+    var height= {{ HEIGHT }};
     var margin = {top: 40, right: 40, bottom: 40, left: 40};
-    var RADIUS = 7
+    var RADIUS = {{ MARKER_SIZE }};
 
     var chart_width = width - margin.left - margin.right;
     var chart_height = height- margin.top - margin.bottom;
 
     var fontsize = 10;
-    var fontfamily = "sans-serif";
+    var fontfamily = "Meiryo UI";
 
-    //var DATASET = [{"CRIM":0.00632,"ZN":18.0,"INDUS":2.31,"CHAS":0.0,"NOX":0.538,"RM":6.575,"AGE":65.2,"DIS":4.09,"RAD":1.0,"TAX":296.0,"PTRATIO":15.3,"B":396.9,"LSTAT":4.98},{"CRIM":0.02731,"ZN":0.0,"INDUS":7.07,"CHAS":0.0,"NOX":0.469,"RM":6.421,"AGE":78.9,"DIS":4.9671,"RAD":2.0,"TAX":242.0,"PTRATIO":17.8,"B":396.9,"LSTAT":9.14},{"CRIM":0.02729,"ZN":0.0,"INDUS":7.07,"CHAS":0.0,"NOX":0.469,"RM":7.185,"AGE":61.1,"DIS":4.9671,"RAD":2.0,"TAX":242.0,"PTRATIO":17.8,"B":392.83,"LSTAT":4.03},{"CRIM":0.03237,"ZN":0.0,"INDUS":2.18,"CHAS":0.0,"NOX":0.458,"RM":6.998,"AGE":45.8,"DIS":6.0622,"RAD":3.0,"TAX":222.0,"PTRATIO":18.7,"B":394.63,"LSTAT":2.94},{"CRIM":0.06905,"ZN":0.0,"INDUS":2.18,"CHAS":0.0,"NOX":0.458,"RM":7.147,"AGE":54.2,"DIS":6.0622,"RAD":3.0,"TAX":222.0,"PTRATIO":18.7,"B":396.9,"LSTAT":5.33},{"CRIM":0.02985,"ZN":0.0,"INDUS":2.18,"CHAS":0.0,"NOX":0.458,"RM":6.43,"AGE":58.7,"DIS":6.0622,"RAD":3.0,"TAX":222.0,"PTRATIO":18.7,"B":394.12,"LSTAT":5.21},{"CRIM":0.08829,"ZN":12.5,"INDUS":7.87,"CHAS":0.0,"NOX":0.524,"RM":6.012,"AGE":66.6,"DIS":5.5605,"RAD":5.0,"TAX":311.0,"PTRATIO":15.2,"B":395.6,"LSTAT":12.43},{"CRIM":0.14455,"ZN":12.5,"INDUS":7.87,"CHAS":0.0,"NOX":0.524,"RM":6.172,"AGE":96.1,"DIS":5.9505,"RAD":5.0,"TAX":311.0,"PTRATIO":15.2,"B":396.9,"LSTAT":19.15},{"CRIM":0.21124,"ZN":12.5,"INDUS":7.87,"CHAS":0.0,"NOX":0.524,"RM":5.631,"AGE":100.0,"DIS":6.0821,"RAD":5.0,"TAX":311.0,"PTRATIO":15.2,"B":386.63,"LSTAT":29.93},{"CRIM":0.17004,"ZN":12.5,"INDUS":7.87,"CHAS":0.0,"NOX":0.524,"RM":6.004,"AGE":85.9,"DIS":6.5921,"RAD":5.0,"TAX":311.0,"PTRATIO":15.2,"B":386.71,"LSTAT":17.1},{"CRIM":0.22489,"ZN":12.5,"INDUS":7.87,"CHAS":0.0,"NOX":0.524,"RM":6.377,"AGE":94.3,"DIS":6.3467,"RAD":5.0,"TAX":311.0,"PTRATIO":15.2,"B":392.52,"LSTAT":20.45},{"CRIM":0.11747,"ZN":12.5,"INDUS":7.87,"CHAS":0.0,"NOX":0.524,"RM":6.009,"AGE":82.9,"DIS":6.2267,"RAD":5.0,"TAX":311.0,"PTRATIO":15.2,"B":396.9,"LSTAT":13.27},{"CRIM":0.09378,"ZN":12.5,"INDUS":7.87,"CHAS":0.0,"NOX":0.524,"RM":5.889,"AGE":39.0,"DIS":5.4509,"RAD":5.0,"TAX":311.0,"PTRATIO":15.2,"B":390.5,"LSTAT":15.71},{"CRIM":0.62976,"ZN":0.0,"INDUS":8.14,"CHAS":0.0,"NOX":0.538,"RM":5.949,"AGE":61.8,"DIS":4.7075,"RAD":4.0,"TAX":307.0,"PTRATIO":21.0,"B":396.9,"LSTAT":8.26},{"CRIM":0.63796,"ZN":0.0,"INDUS":8.14,"CHAS":0.0,"NOX":0.538,"RM":6.096,"AGE":84.5,"DIS":4.4619,"RAD":4.0,"TAX":307.0,"PTRATIO":21.0,"B":380.02,"LSTAT":10.26},{"CRIM":0.62739,"ZN":0.0,"INDUS":8.14,"CHAS":0.0,"NOX":0.538,"RM":5.834,"AGE":56.5,"DIS":4.4986,"RAD":4.0,"TAX":307.0,"PTRATIO":21.0,"B":395.62,"LSTAT":8.47},{"CRIM":1.05393,"ZN":0.0,"INDUS":8.14,"CHAS":0.0,"NOX":0.538,"RM":5.935,"AGE":29.3,"DIS":4.4986,"RAD":4.0,"TAX":307.0,"PTRATIO":21.0,"B":386.85,"LSTAT":6.58},{"CRIM":0.7842,"ZN":0.0,"INDUS":8.14,"CHAS":0.0,"NOX":0.538,"RM":5.99,"AGE":81.7,"DIS":4.2579,"RAD":4.0,"TAX":307.0,"PTRATIO":21.0,"B":386.75,"LSTAT":14.67},{"CRIM":0.80271,"ZN":0.0,"INDUS":8.14,"CHAS":0.0,"NOX":0.538,"RM":5.456,"AGE":36.6,"DIS":3.7965,"RAD":4.0,"TAX":307.0,"PTRATIO":21.0,"B":288.99,"LSTAT":11.69},{"CRIM":0.7258,"ZN":0.0,"INDUS":8.14,"CHAS":0.0,"NOX":0.538,"RM":5.727,"AGE":69.5,"DIS":3.7965,"RAD":4.0,"TAX":307.0,"PTRATIO":21.0,"B":390.95,"LSTAT":11.28}]
     var DATASET = {{ DATASET }}
     var XNAME = "NOX"
     var YNAME = "AGE"

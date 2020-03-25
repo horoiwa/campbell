@@ -3,38 +3,26 @@ from pprint import pprint
 
 import pandas as pd
 import panel as pn
-from jinja2 import Template
 
 from campbell.constants import ENV, D3_FILE
 
 
 class SimpleScatter:
 
-    def __init__(self, df: pd.DataFrame, jupyter: bool):
+    def __init__(self, df: pd.DataFrame, is_jupyter=True):
 
         self.data = df.to_json(orient="records")
 
-        self.is_jupyter = jupyter
+        self.is_jupyter = is_jupyter
 
         self.template = ENV.get_template("simple_scatter.html")
 
-    def plot(self):
-        html = self.template.render({"D3_FILE": D3_FILE, "DATASET": self.data})
-        #pprint(html)
+    def plot(self, width=400, height=400, marker_size=6):
+        html = self.template.render({"DATASET": self.data,
+                                     "WIDTH": width,
+                                     "HEIGHT": height,
+                                     "MARKER_SIZE": marker_size})
         if self.is_jupyter:
-            html = HTML(html)
-        else:
             html = pn.pane.HTML(html)
+
         return html
-
-
-
-if __name__ == "__main__":
-    from sklearn.datasets import load_boston
-
-    bos = load_boston()
-    df = pd.DataFrame(bos.data, columns=bos.feature_names)
-    df = df.iloc[:20, :]
-
-    app = SimpleScatter(df=df, jupyter=False)
-    print(app.plot())
